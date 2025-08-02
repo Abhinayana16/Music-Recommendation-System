@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Recommendation System</title>
+    <style>
+        /* Define constants for readability */
+        :root {
+            --input-padding: 15px;
+            --input-margin-bottom: 20px;
+            --font-size-large: 18px;
+            --form-max-width: 900px;
+            --grid-gap: 20px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: var(--form-max-width);
+            margin: auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            gap: var(--grid-gap);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 85%;
+            padding: var(--input-padding); /* Increased padding for larger input box */
+            margin-bottom: var(--input-margin-bottom);
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: var(--font-size-large);
+        }
+
+        input::placeholder {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        @media (max-width: 800px) {
+            .form-grid {
+                grid-template-columns: 1fr; /* On smaller screens, use 1 column */
+            }
+        }
+    </style>
+    <script>
+        // Function to convert 0-100 inputs to 0-1 scale before submitting
+        function normalizeValues(event) {
+            const form = event.target;
+            
+            // List of input fields to convert
+            const fieldsToNormalize = ['instrumentalness', 'valence', 'energy', 'danceability'];
+            
+            // Loop over each field and divide its value by 100
+            fieldsToNormalize.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    // Convert value from 0-100 scale to 0-1 scale
+                    field.value = (field.value / 100).toFixed(2); // Divide and keep 2 decimal places
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Music Recommendation System</h1>
+    <form action="/recommend" method="post" onsubmit="normalizeValues(event)">
+        <div class="form-grid">
+            <div>
+                <label for="genre">Select Genre:</label>
+                <select name="genre" id="genre" required>
+                    <option value="all">No specific genre (All genres)</option>
+                    {% for genre in genres %}
+                    <option value="{{ genre }}">{{ genre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="popularity">Popularity (0-100):</label>
+                <input type="number" name="popularity" id="popularity" min="0" max="100" step="1" required placeholder="How popular is the song?">
+            </div>
+
+            <div>
+                <label for="loudness">Loudness (-60 to 0):</label>
+                <input type="number" name="loudness" id="loudness" min="-60" max="0" step="0.1" required placeholder="Loudness in dB (avg decibels = 18) ">
+            </div>
+
+            <div>
+                <label for="instrumentalness">Instrumentalness (0-100):</label>
+                <input type="number" name="instrumentalness" id="instrumentalness" min="0" max="100" step="1" required placeholder="Likelihood of being instrumental">
+            </div>
+
+            <div>
+                <label for="tempo">Tempo (BPM, 50-250):</label>
+                <input type="number" name="tempo" id="tempo" min="50" max="250" step="0.1" required placeholder="Speed of the song (beats per minute)">
+            </div>
+
+            <div>
+                <label for="valence">Valence (0-100):</label>
+                <input type="number" name="valence" id="valence" min="0" max="100" step="1" required placeholder="Happiness level of the song">
+            </div>
+
+            <div>
+                <label for="energy">Energy (0-100):</label>
+                <input type="number" name="energy" id="energy" min="0" max="100" step="1" required placeholder="Measure of intensity and activity">
+            </div>
+
+            <div>
+                <label for="danceability">Danceability (0-100):</label>
+                <input type="number" name="danceability" id="danceability" min="0" max="100" step="1" required placeholder="How suitable is the song for dancing?">
+            </div>
+
+            <div>
+                <label for="song_type">Select song type:</label>
+                <select name="song_type" id="song_type" required>
+                    <option value="latest">Latest songs (last 5 years)</option>
+                    <option value="old">Old songs (older than 5 years)</option>
+                    <option value="both">Both latest and old songs</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit">Get Recommendations</button>
+    </form>
+</body>
+</html>

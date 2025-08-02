@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Recommendations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #28a745;
+            color: white;
+        }
+        tr:hover {background-color: #f1f1f1;}
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #28a745;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Recommended Songs</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Artist Name</th>
+                    <th>Track Name</th>
+                    <th>Popularity</th>
+                    <th>Genre</th>
+                    <th>Release Year</th>
+                    <th>YouTube Link</th>
+                    <th>Spotify Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ recommendations | safe }}
+            </tbody>
+        </table>
+        <a href="/" class="back-link">Go Back</a>
+    </div>
+</body>
+</html>
